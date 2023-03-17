@@ -5,7 +5,6 @@ function solution(numbers, target) {
             if(sum === target) answer++;
             return;
         }
-        let sum1
         dfs([...numbers.slice(1)], sum + numbers[0]);
         dfs([...numbers.slice(1)], sum - numbers[0]);
     }
