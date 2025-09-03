@@ -40,8 +40,16 @@ function solution(input) {
   return 0; // 결과 반환
 }
 
-// 입력 처리 - Best Practice (백준 표준)
-const input = fs.readFileSync("/dev/stdin").toString();
+// 입력 처리 - 환경에 따른 자동 선택 (로컬/백준 호환)
+let input;
+try {
+  // /dev/stdin이 존재하면 사용 (백준 환경)
+  input = fs.readFileSync("/dev/stdin").toString();
+} catch {
+  // 없으면 input.txt 사용 (로컬 환경)
+  input = fs.readFileSync("input.txt").toString();
+}
+
 console.log(solution(input));
 ```
 
@@ -64,10 +72,12 @@ console.log(solution(input));
 ```bash
 cd test
 
-# 파이프 입력으로 테스트 (Best Practice)
-node solution.js < input.txt
-node solution.js < input2.txt
-node solution.js < input3.txt
+# 로컬 테스트 (input.txt 자동 사용)
+node solution.js
+
+# 다른 입력 파일로 테스트 (파일명 변경 후)
+# input.txt를 input2.txt 내용으로 교체하거나
+# 파이프 입력 사용: node solution.js < input2.txt
 
 # 완료 후 정리
 cd ..
@@ -89,20 +99,22 @@ rm -rf test
 3. 예제 입력 파일들 생성
 4. README.md 생성
 5. "이제 solution.js에서 직접 문제를 풀어보세요!" 안내
-6. 테스트 방법: `node solution.js < input.txt` 형태로 안내
+6. 테스트 방법: `node solution.js` (input.txt 자동 사용) 안내
 
 ## Best Practice 원칙
 
 ### 입력 처리 방식
 
-- **표준**: `fs.readFileSync("/dev/stdin")` 사용
-- **테스트**: 파이프 입력 `< input.txt` 방식
+- **자동 환경 감지**: try-catch로 `/dev/stdin` 존재 여부 확인
+- **로컬 테스트**: `input.txt` 파일 자동 사용
 - **백준 호환**: 코드 수정 없이 바로 제출 가능
+- **유연성**: 파이프 입력도 여전히 지원
 
 ### 코드 품질
 
 - 함수 분리로 가독성 향상
 - 명확한 변수명 사용
 - 효율적인 알고리즘 구현 유도
+- 환경별 입력 처리 자동화
 
 **중요**: 사용자의 학습을 위해 절대로 완성된 답안을 제공하지 마세요.
